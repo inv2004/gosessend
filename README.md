@@ -2,8 +2,16 @@
 Small golang SES sending email tool
 
 ## Usage
-```bash
-./gosessend mail.txt
+```
+usage: gosessend.exe [<flags>] <raw-mail-file>
+
+Flags:
+      --help     Show context-sensitive help (also try --help-long and
+                 --help-man).
+  -v, --verbose  Verbose mode.
+
+Args:
+  <raw-mail-file>  Raw mail file.
 ```
 
 ## Build
