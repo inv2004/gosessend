@@ -17,22 +17,11 @@ jobs:
     - name: Setup Deps
       run: go get -d .
     - name: Build
-      run: go build
+      run: mkdir dist && go build -o dist
     - uses: papeloto/action-zip@v1
-      if: startsWith(matrix.os, 'ubuntu')
       with:
-        files: gosessend
+        files: dist/*
         dest: gosessend-${{ matrix.os }}.zip
-    - uses: papeloto/action-zip@v1
-      if: startsWith(matrix.os, 'macos')
-      with:
-        files: gosessend
-        dest: gosessend-${{ matrix.os }}.zip
-    - uses: papeloto/action-zip@v1
-      if: startsWith(matrix.os, 'windows')
-      with:
-        files: gosessend.exe
-        dest: release-${{ matrix.os }}.zip
     - uses: dev-drprasad/delete-tag-and-release@v0.1.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
