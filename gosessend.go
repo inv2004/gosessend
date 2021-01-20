@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -12,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ses"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 type Sender struct {
@@ -85,39 +87,29 @@ func readFile(fileName string) (b []byte, err error) {
 	log.Debug().Msg("Reading file ...")
 
 	b, err = ioutil.ReadFile(fileName)
-	log.Debug().Int("rawSize", len(b)).Send()
+	if err == nil {
+		log.Debug().Int("rawSize", len(b)).Send()
+	}
+
 	return
 }
 
 func printUsage() {
-	fmt.Print(`  Use: ./gosessend mail-file
-`)
+	exe := filepath.Base(os.Args[0])
+
+	fmt.Printf(`  Use: ./%s mail-file
+`, exe)
 }
 
 func checkArgs() (string, bool) {
-	if len(os.Args) <= 1 {
-		printUsage()
-		os.Exit(1)
-	} else if len(os.Args) == 2 && (os.Args[1] == "--help" || os.Args[1] == "-h") {
-		printUsage()
-		os.Exit(0)
-	} else if len(os.Args) == 2 && (os.Args[1] == "--verbose" || os.Args[1] == "-v") {
-		printUsage()
-		os.Exit(1)
+	if len(os.Args) < 2 {
+		kingpin.Usage()
 	}
-	if len(os.Args) > 3 {
-		fmt.Println("too many arguments")
-		printUsage()
-		os.Exit(1)
-	}
-	if len(os.Args) == 3 {
-		if os.Args[1] == "-v" || os.Args[1] == "--verbose" {
-			return os.Args[2], true
-		} else if os.Args[2] == "-v" || os.Args[2] == "--verbose" {
-			return os.Args[1], true
-		}
-	}
-	return os.Args[1], false
+	verboseA := kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
+	fileNameA := kingpin.Arg("mail-file", "Raw mail file.").Required().String()
+	kingpin.Parse()
+
+	return *fileNameA, *verboseA
 }
 
 func main() {
@@ -149,12 +141,12 @@ func main() {
 
 	err = send(svc, rawEmail)
 	if err != nil {
+		log.Err(err).Send()
 		if aerr, ok := err.(awserr.Error); ok {
 			if aerr.Code() == "InvalidClientTokenId" {
 				log.Error().Msg("Probably wrong key in $HOME/.aws/credentials")
 			}
 		}
-		log.Err(err).Send()
 		return
 	}
 }
