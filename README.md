@@ -23,5 +23,4 @@ go get -d .
 go build
 ```
 3)
-Create ``$HOME/.aws/credentials`` for ``default`` profile
-https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
+Create ``$HOME/.aws/credentials`` for ``default`` profile: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
