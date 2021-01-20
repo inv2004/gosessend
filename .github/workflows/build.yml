@@ -46,7 +46,7 @@ jobs:
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        URL: 'https://github.com/inv2004/gosessend/releases/tag/refs%2Fheads%2Fmain'
+        URL: 'https://github.com/inv2004/gosessend/releases/tag/running'
       with:
         upload_url: ${{ URL }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: osessend-${{ matrix.artifact_name }}.zip
