@@ -17,18 +17,18 @@ jobs:
       run: go get -d .
     - name: Build
       run: go build
-    - uses: papeloto/action-zip@v1
       if: startsWith(matrix.os, 'ubuntu')
+    - uses: papeloto/action-zip@v1
         with:
           files: gosessend
           dest: release-${{ matrix.artifact_name }}.zip
-    - uses: papeloto/action-zip@v1
       if: startsWith(matrix.os, 'macos')
+    - uses: papeloto/action-zip@v1
         with:
           files: gosessend
           dest: release-${{ matrix.artifact_name }}.zip
-    - uses: papeloto/action-zip@v1
       if: startsWith(matrix.os, 'windows')
+    - uses: papeloto/action-zip@v1
         with:
           files: gosessend.exe
           dest: release-${{ matrix.artifact_name }}.zip
