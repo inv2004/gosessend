@@ -19,10 +19,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: running
-        release_name: Running
+        release_name: Rolling Release
         draft: false
         prerelease: true
-  release:
+
+  build_release:
     strategy:
       matrix:
         go-version: [1.15.x]
