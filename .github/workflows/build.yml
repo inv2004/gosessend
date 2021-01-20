@@ -22,33 +22,38 @@ jobs:
       with:
         files: gosessend
         dest: gosessend-${{ matrix.os }}.zip
-    - uses: papeloto/action-zip@v1
-      if: startsWith(matrix.os, 'macos')
-      with:
-        files: gosessend
-        dest: gosessend-${{ matrix.os }}.zip
-    - uses: papeloto/action-zip@v1
-      if: startsWith(matrix.os, 'windows')
-      with:
-        files: gosessend.exe
-        dest: release-${{ matrix.os }}.zip
-    # - name: Create Release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - uses: papeloto/action-zip@v1
+    #   if: startsWith(matrix.os, 'macos')
     #   with:
-    #     tag_name: ${{ github.ref }}
-    #     release_name: Release ${{ github.ref }}
-    #     draft: false
-    #     prerelease: true
+    #     files: gosessend
+    #     dest: gosessend-${{ matrix.os }}.zip
+    # - uses: papeloto/action-zip@v1
+    #   if: startsWith(matrix.os, 'windows')
+    #   with:
+    #     files: gosessend.exe
+    #     dest: release-${{ matrix.os }}.zip
+    - uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        delete_release: true # default: false
+        tag_name: running # tag name to delete
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: running
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: true
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        URL: 'https://github.com/inv2004/gosessend/releases/tag/running'
       with:
-        upload_url: $URL # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: osessend-${{ matrix.artifact_name }}.zip
-        asset_name: osessend-${{ matrix.artifact_name }}.zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: osessend-${{ matrix.os }}.zip
+        asset_name: osessend-${{ matrix.os }}.zip
         asset_content_type: application/zip
