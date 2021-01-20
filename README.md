@@ -8,7 +8,7 @@ Small golang SES sending email tool
 
 ## Build
 
-1) Setup go by instruction from https://golang.org/dl/
+1) Setup Go by instruction from https://golang.org/dl/
 2) 
 ```bash
 git clone https://github.com/inv2004/gosessend
