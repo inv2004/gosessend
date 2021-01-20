@@ -1,7 +1,28 @@
 on: [push, pull_request]
 name: Build
 jobs:
-  test:
+  create_release:
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+    - name: Delete Release
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        delete_release: true # default: false
+        tag_name: running # tag name to delete
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: running
+        release_name: Running
+        draft: false
+        prerelease: true
+  release:
     strategy:
       matrix:
         go-version: [1.15.x]
@@ -21,22 +42,6 @@ jobs:
       with:
         files: dist/*
         dest: gosessend-${{ matrix.os }}.zip
-    - uses: dev-drprasad/delete-tag-and-release@v0.1.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        delete_release: true # default: false
-        tag_name: running # tag name to delete
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: running
-        release_name: Running
-        draft: false
-        prerelease: true
     - name: Upload Release Asset
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
