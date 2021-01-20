@@ -21,17 +21,17 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
       with:
         files: gosessend
-        dest: gosessend-${{ matrix.artifact_name }}.zip
+        dest: gosessend-${{ matrix.os }}.zip
     - uses: papeloto/action-zip@v1
       if: startsWith(matrix.os, 'macos')
       with:
         files: gosessend
-        dest: gosessend-${{ matrix.artifact_name }}.zip
+        dest: gosessend-${{ matrix.os }}.zip
     - uses: papeloto/action-zip@v1
       if: startsWith(matrix.os, 'windows')
       with:
         files: gosessend.exe
-        dest: release-${{ matrix.artifact_name }}.zip
+        dest: release-${{ matrix.os }}.zip
     - name: Create Release
       uses: actions/create-release@v1
       env:
