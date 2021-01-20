@@ -93,14 +93,15 @@ func readFile(fileName string) (b []byte, err error) {
 }
 
 func checkArgs() (string, bool) {
+	verboseArg := kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
+	fileNameArg := kingpin.Arg("mail-file", "Raw mail file.").Required().String()
 	if len(os.Args) < 2 {
 		kingpin.Usage()
+		os.Exit(1)
 	}
-	verboseA := kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
-	fileNameA := kingpin.Arg("mail-file", "Raw mail file.").Required().String()
 	kingpin.Parse()
 
-	return *fileNameA, *verboseA
+	return *fileNameArg, *verboseArg
 }
 
 func main() {
