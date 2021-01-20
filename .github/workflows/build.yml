@@ -40,12 +40,13 @@ jobs:
         delete_release: true # default: false
         tag_name: running # tag name to delete
     - name: Create Release
+      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: running
-        release_name: Release Running
+        release_name: Running
         draft: false
         prerelease: true
     - name: Upload Release Asset
