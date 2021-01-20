@@ -1,5 +1,5 @@
 # gosessend
-Small golang ses sending email tool
+Small golang SES sending email tool
 
 ## Usage
 ```bash
