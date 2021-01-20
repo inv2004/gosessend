@@ -43,7 +43,7 @@ jobs:
       run: mkdir dist && go build -o dist && find
     - uses: papeloto/action-zip@v1
       with:
-        files: dist/*
+        files: dist/
         dest: gosessend-${{ matrix.os }}.zip
     - name: Upload Release Asset
       id: upload-release-asset 
