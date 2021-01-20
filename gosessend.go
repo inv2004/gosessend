@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -92,13 +90,6 @@ func readFile(fileName string) (b []byte, err error) {
 	}
 
 	return
-}
-
-func printUsage() {
-	exe := filepath.Base(os.Args[0])
-
-	fmt.Printf(`  Use: ./%s mail-file
-`, exe)
 }
 
 func checkArgs() (string, bool) {
