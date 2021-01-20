@@ -5,7 +5,8 @@ jobs:
     strategy:
       matrix:
         go-version: [1.15.x]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
+        # os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install Go
@@ -22,16 +23,16 @@ jobs:
       with:
         files: gosessend
         dest: gosessend-${{ matrix.os }}.zip
-    # - uses: papeloto/action-zip@v1
-    #   if: startsWith(matrix.os, 'macos')
-    #   with:
-    #     files: gosessend
-    #     dest: gosessend-${{ matrix.os }}.zip
-    # - uses: papeloto/action-zip@v1
-    #   if: startsWith(matrix.os, 'windows')
-    #   with:
-    #     files: gosessend.exe
-    #     dest: release-${{ matrix.os }}.zip
+    - uses: papeloto/action-zip@v1
+      if: startsWith(matrix.os, 'macos')
+      with:
+        files: gosessend
+        dest: gosessend-${{ matrix.os }}.zip
+    - uses: papeloto/action-zip@v1
+      if: startsWith(matrix.os, 'windows')
+      with:
+        files: gosessend.exe
+        dest: release-${{ matrix.os }}.zip
     - uses: dev-drprasad/delete-tag-and-release@v0.1.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
