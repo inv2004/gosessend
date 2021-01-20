@@ -136,7 +136,7 @@ func main() {
 		log.Err(err).Send()
 		if aerr, ok := err.(awserr.Error); ok {
 			if aerr.Code() == "InvalidClientTokenId" {
-				log.Error().Msg("Probably wrong key in $HOME/.aws/credentials")
+				log.Error().Msg("Probably wrong key in $HOME/.aws/credentials for default profile")
 			}
 		}
 		return
