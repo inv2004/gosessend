@@ -12,14 +12,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         delete_release: true # default: false
-        tag_name: running # tag name to delete
+        tag_name: rolling # tag name to delete
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: running
+        tag_name: rolling
         release_name: Rolling Release
         draft: false
         prerelease: true
@@ -40,7 +40,7 @@ jobs:
     - name: Setup Deps
       run: go get -d .
     - name: Build
-      run: mkdir dist && go build -o dist
+      run: mkdir dist && go build -o dist && find
     - uses: papeloto/action-zip@v1
       with:
         files: dist/*
