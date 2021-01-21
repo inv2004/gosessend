@@ -62,13 +62,13 @@ func send(svc *ses.SES, rawEmail []byte) error {
 	log.Debug().Msg("Sending ... ")
 
 	input := &ses.SendRawEmailInput{
-		FromArn: aws.String(""),
+		// FromArn: aws.String(""),
 		RawMessage: &ses.RawMessage{
 			Data: rawEmail,
 		},
-		ReturnPathArn: aws.String(""),
-		Source:        aws.String(""),
-		SourceArn:     aws.String(""),
+		// ReturnPathArn: aws.String(""),
+		// Source:        aws.String(""),
+		// SourceArn:     aws.String(""),
 	}
 
 	result, err := svc.SendRawEmail(input)
