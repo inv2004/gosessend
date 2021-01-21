@@ -1,6 +1,9 @@
 # gosessend
 Small golang SES sending email tool
 
+### Download
+Rolling release is here https://github.com/inv2004/gosessend/releases/tag/rolling
+
 ## Usage
 ```
 usage: gosessend.exe [<flags>] <raw-mail-file>
