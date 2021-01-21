@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/endpoints"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ses"
 	"github.com/rs/zerolog"
@@ -20,7 +21,7 @@ type Sender struct {
 	verbose bool
 }
 
-const DefaultRegion = "us-west-1"
+const DefaultRegion = endpoints.UsEast1RegionID
 
 func auth(sender *Sender) (*ses.SES, error) {
 	log.Debug().Msg("auth")
