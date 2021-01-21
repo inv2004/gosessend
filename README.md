@@ -24,14 +24,8 @@ Args:
 2) 
 ```bash
 git clone https://github.com/inv2004/gosessend
-```
-```bash
 cd gosessend
-```
-```bash
 go get -d .
-```
-```bash
 go build
 ```
 3)
