@@ -9,6 +9,7 @@ Flags:
       --help     Show context-sensitive help (also try --help-long and
                  --help-man).
   -v, --verbose  Verbose mode.
+  -j, --json     print json for send-raw-email tool.
 
 Args:
   <raw-mail-file>  Raw mail file.

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 
@@ -92,20 +94,43 @@ func readFile(fileName string) (b []byte, err error) {
 	return
 }
 
-func checkArgs() (string, bool) {
+func checkArgs() (string, bool, bool) {
 	verboseArg := kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
 	fileNameArg := kingpin.Arg("raw-mail-file", "Raw mail file.").Required().String()
+	jsonArg := kingpin.Flag("json", "print json for send-raw-email tool.").Short('j').Bool()
 	if len(os.Args) < 2 {
 		kingpin.Usage()
 		os.Exit(1)
 	}
 	kingpin.Parse()
 
-	return *fileNameArg, *verboseArg
+	return *fileNameArg, *verboseArg, *jsonArg
+}
+
+type RawJson struct {
+	Data string
+}
+
+func generateJson(fileName string) {
+	rawEmail, err := readFile(fileName)
+	if err != nil {
+		log.Err(err).Send()
+		return
+	}
+
+	j := RawJson{Data: string(rawEmail)}
+
+	out, err := json.Marshal(j)
+	if err != nil {
+		log.Err(err).Send()
+	}
+
+	fmt.Print(string(out))
+
 }
 
 func main() {
-	fileName, verbose := checkArgs()
+	fileName, verbose, j := checkArgs()
 
 	sender := &Sender{verbose: verbose}
 
@@ -113,6 +138,11 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	} else {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+
+	if j {
+		generateJson(fileName)
+		return
 	}
 
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: zerolog.TimeFormatUnix})
